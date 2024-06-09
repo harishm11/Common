@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/harishm11/PolicyProcessor_V1.0/common/models"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
+	"github.com/harishm11/API-Gateway/models"
 )
 
 // RecordChangeIndicators represents the change indicators for records
@@ -42,7 +41,7 @@ func StringToChangeIndicator(str string) models.ChangeIndicator {
 
 // GenerateChangeSummary generates a summary of changes based on the provided indicators
 // GenerateChangeSummary generates a summary of changes based on the provided indicators
-func GenerateChangeSummary(currBundle, priorBundle *workflowmodels.Bundle) ([]byte, error) {
+func GenerateChangeSummary(currBundle, priorBundle *models.Bundle) ([]byte, error) {
 	summary := ChangeSummary{
 		Fields:  make(FieldChangeIndicators),
 		Records: make(RecordChangeIndicators),

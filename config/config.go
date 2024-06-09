@@ -6,8 +6,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Config struct {
+	RatingServiceURL      string
+	TransactionServiceURL string
+	AccountServiceURL     string
+	PolicyServiceURL      string
+}
+
+var AppConfig Config
+
 func InitConfig() {
-	viper.SetConfigName("../../common/config/config.yaml")
+	viper.SetConfigName("..config.yaml")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
@@ -20,6 +29,11 @@ func InitConfig() {
 		env = "development"
 		viper.Set("env", env)
 	}
+
+	AppConfig.RatingServiceURL = viper.GetString("RATING_SERVICE_URL")
+	AppConfig.TransactionServiceURL = viper.GetString("TRANSACTION_SERVICE_URL")
+	AppConfig.PolicyServiceURL = viper.GetString("POLICY_SERVICE_URL")
+	AppConfig.AccountServiceURL = viper.GetString("ACCOUNT_SERVICE_URL")
 
 }
 func GetConfig(key string) string {

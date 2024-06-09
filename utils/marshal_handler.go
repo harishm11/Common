@@ -3,11 +3,11 @@ package utils
 import (
 	"time"
 
-	"github.com/harishm11/PolicyProcessor_V1.0/common/logger"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
+	"github.com/harishm11/API-Gateway/logger"
+	"github.com/harishm11/API-Gateway/models"
 )
 
-func MarshallBundle(bundle *workflowmodels.Bundle, effectiveDate time.Time) (map[string]interface{}, error) {
+func MarshallBundle(bundle *models.Bundle, effectiveDate time.Time) (map[string]interface{}, error) {
 	// Create a map to store the marshalled data
 	data := make(map[string]interface{})
 	gen := NewIDGenerator()

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/harishm11/PolicyProcessor_V1.0/common/logger"
+	"github.com/harishm11/API-Gateway/logger"
 )
 
 func RequestLogger(c *fiber.Ctx) error {

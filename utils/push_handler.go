@@ -2,14 +2,14 @@ package utils
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/harishm11/PolicyProcessor_V1.0/common/config"
-	"github.com/harishm11/PolicyProcessor_V1.0/common/logger"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
 
+	"github.com/harishm11/API-Gateway/config"
+	"github.com/harishm11/API-Gateway/logger"
+	"github.com/harishm11/API-Gateway/models"
 	"gorm.io/gorm"
 )
 
-func Push(c *fiber.Ctx, bundle *workflowmodels.Bundle) (string, error) {
+func Push(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
 	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
@@ -132,7 +132,7 @@ func Push(c *fiber.Ctx, bundle *workflowmodels.Bundle) (string, error) {
 	return "Success", nil
 }
 
-func SubmissionPush(c *fiber.Ctx, bundle *workflowmodels.Bundle) (string, error) {
+func SubmissionPush(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
 	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")

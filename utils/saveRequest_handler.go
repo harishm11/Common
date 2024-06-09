@@ -4,15 +4,13 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/harishm11/PolicyProcessor_V1.0/common/config"
-	"github.com/harishm11/PolicyProcessor_V1.0/common/logger"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
-
 	"github.com/gofiber/fiber/v2"
-	transactionmodels "github.com/harishm11/PolicyProcessor_V1.0/services/transaction_service/models"
+	"github.com/harishm11/API-Gateway/config"
+	"github.com/harishm11/API-Gateway/logger"
+	"github.com/harishm11/API-Gateway/models"
 )
 
-func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *workflowmodels.Bundle, mode string, workflowName string) error {
+func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *models.Bundle, mode string, workflowName string) error {
 	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
@@ -46,7 +44,7 @@ func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *workf
 	}
 
 	logger.GetLogger().Info(status)
-	request := transactionmodels.Transaction{
+	request := models.Transaction{
 		EffectiveDate:     eff_date,
 		AccountNumber:     accountNumber,
 		PolicyNumber:      policyNumber,
@@ -59,7 +57,7 @@ func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *workf
 	}
 
 	// Check if a record with the same account and policy numbers exists
-	var existingRequest transactionmodels.Transaction
+	var existingRequest models.Transaction
 	if err := policyProcessorDB.Where("account_number = ? AND policy_number = ?  AND transaction_number = ?", accountNumber, policyNumber, transactionNumber).First(&existingRequest).Error; err != nil {
 		// If no record found, create a new one
 		if policyProcessorDB.Create(&request).Error != nil {

@@ -6,20 +6,18 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	commonmodels "github.com/harishm11/PolicyProcessor_V1.0/common/models"
-	policymodels "github.com/harishm11/PolicyProcessor_V1.0/services/policy_service/models"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
+	"github.com/harishm11/API-Gateway/models"
 )
 
 const (
-	NoChange commonmodels.ChangeIndicator = "N"
-	Changed  commonmodels.ChangeIndicator = "C"
-	Added    commonmodels.ChangeIndicator = "A"
-	Deleted  commonmodels.ChangeIndicator = "D"
+	NoChange models.ChangeIndicator = "N"
+	Changed  models.ChangeIndicator = "C"
+	Added    models.ChangeIndicator = "A"
+	Deleted  models.ChangeIndicator = "D"
 )
 
 // FieldChangeIndicators represents the change indicators for a model
-type FieldChangeIndicators map[string]commonmodels.ChangeIndicator
+type FieldChangeIndicators map[string]models.ChangeIndicator
 
 // CompareAndSetFieldIndicators compares two instances of a model and sets the change indicators
 
@@ -64,36 +62,36 @@ func CompareAndSetFieldIndicators(modelType reflect.Type, oldInstance, newInstan
 	return indicators, nil
 }
 
-func SetIndicators(c *fiber.Ctx, bundle *workflowmodels.Bundle, FromDbBundle *workflowmodels.Bundle) error {
+func SetIndicators(c *fiber.Ctx, bundle *models.Bundle, FromDbBundle *models.Bundle) error {
 
 	// Compare and set indicators for Policy
-	policyIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(policymodels.Policy{}), FromDbBundle.Policy, bundle.Policy)
+	policyIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.Policy{}), FromDbBundle.Policy, bundle.Policy)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 	}
-	bundle.Policy.FieldChangeIndicators = commonmodels.ChangeIndicators(policyIndicators)
+	bundle.Policy.FieldChangeIndicators = models.ChangeIndicators(policyIndicators)
 	SetRecordChangeIndicatorPolicy(bundle)
 
 	// Compare and set indicators for PolicyHolder
-	policyHolderIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(policymodels.PolicyHolder{}), FromDbBundle.PolicyHolder, bundle.PolicyHolder)
+	policyHolderIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.PolicyHolder{}), FromDbBundle.PolicyHolder, bundle.PolicyHolder)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 	}
-	bundle.PolicyHolder.FieldChangeIndicators = commonmodels.ChangeIndicators(policyHolderIndicators)
+	bundle.PolicyHolder.FieldChangeIndicators = models.ChangeIndicators(policyHolderIndicators)
 	SetRecordChangeIndicatorPolicyHolder(bundle)
 
 	// Compare and set indicators for Current Carrier
-	currentCarrierIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(workflowmodels.CurrentCarrierInfo{}), FromDbBundle.CurrentCarrier, bundle.CurrentCarrier)
+	currentCarrierIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.CurrentCarrierInfo{}), FromDbBundle.CurrentCarrier, bundle.CurrentCarrier)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 	}
-	bundle.CurrentCarrier.FieldChangeIndicators = commonmodels.ChangeIndicators(currentCarrierIndicators)
+	bundle.CurrentCarrier.FieldChangeIndicators = models.ChangeIndicators(currentCarrierIndicators)
 	SetRecordChangeIndicatorCurrentCarrier(bundle)
 
 	// Iterate over each vehicle in the bundle
 	for i, vehicle := range bundle.Vehicles {
 		// Find the corresponding vehicle in FromDbBundle
-		var dbVehicle *workflowmodels.Vehicle
+		var dbVehicle *models.Vehicle
 		for _, v := range FromDbBundle.Vehicles {
 			if v.VehicleID == vehicle.VehicleID {
 				dbVehicle = &v
@@ -102,26 +100,26 @@ func SetIndicators(c *fiber.Ctx, bundle *workflowmodels.Bundle, FromDbBundle *wo
 		}
 		if dbVehicle == nil {
 			// Vehicle not found in FromDbBundle
-			dbVehicle = &workflowmodels.Vehicle{}
+			dbVehicle = &models.Vehicle{}
 		}
 
 		// Compare and set indicators for the current vehicle
-		vehicleIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(workflowmodels.Vehicle{}), *dbVehicle, vehicle)
+		vehicleIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.Vehicle{}), *dbVehicle, vehicle)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 		}
 		// Assign the change indicators to the current vehicle
-		bundle.Vehicles[i].FieldChangeIndicators = commonmodels.ChangeIndicators(vehicleIndicators)
+		bundle.Vehicles[i].FieldChangeIndicators = models.ChangeIndicators(vehicleIndicators)
 
 		// Now, update change indicators for each coverage in the vehicle
 		for j, coverage := range vehicle.Coverages {
 			if j < len(dbVehicle.Coverages) && coverage.CoverageCode == dbVehicle.Coverages[j].CoverageCode {
-				coverageIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(workflowmodels.Coverage{}), dbVehicle.Coverages[j], coverage)
+				coverageIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.Coverage{}), dbVehicle.Coverages[j], coverage)
 				if err != nil {
 					return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 				}
 				// Assign the change indicators to the current coverage
-				bundle.Vehicles[i].Coverages[j].FieldChangeIndicators = commonmodels.ChangeIndicators(coverageIndicators)
+				bundle.Vehicles[i].Coverages[j].FieldChangeIndicators = models.ChangeIndicators(coverageIndicators)
 			}
 		}
 	}
@@ -131,7 +129,7 @@ func SetIndicators(c *fiber.Ctx, bundle *workflowmodels.Bundle, FromDbBundle *wo
 	// Iterate over each driver in the bundle
 	for i, driver := range bundle.Drivers {
 		// Find the corresponding driver in FromDbBundle
-		var dbDriver *workflowmodels.Driver
+		var dbDriver *models.Driver
 		for _, d := range FromDbBundle.Drivers {
 			if d.DriverID == driver.DriverID {
 				dbDriver = &d
@@ -140,16 +138,16 @@ func SetIndicators(c *fiber.Ctx, bundle *workflowmodels.Bundle, FromDbBundle *wo
 		}
 		if dbDriver == nil {
 			// Driver not found in FromDbBundle
-			dbDriver = &workflowmodels.Driver{}
+			dbDriver = &models.Driver{}
 		}
 
 		// Compare and set indicators for the current driver
-		driverIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(workflowmodels.Driver{}), *dbDriver, driver)
+		driverIndicators, err := CompareAndSetFieldIndicators(reflect.TypeOf(models.Driver{}), *dbDriver, driver)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error"})
 		}
 		// Assign the change indicators to the current driver
-		bundle.Drivers[i].FieldChangeIndicators = commonmodels.ChangeIndicators(driverIndicators)
+		bundle.Drivers[i].FieldChangeIndicators = models.ChangeIndicators(driverIndicators)
 	}
 
 	SetRecordChangeIndicatorDriver(bundle, FromDbBundle)
@@ -157,7 +155,7 @@ func SetIndicators(c *fiber.Ctx, bundle *workflowmodels.Bundle, FromDbBundle *wo
 	return nil
 
 }
-func SetRecordChangeIndicatorDriver(bundle1, bundle2 *workflowmodels.Bundle) error {
+func SetRecordChangeIndicatorDriver(bundle1, bundle2 *models.Bundle) error {
 	// Create a map to store drivers' IDs and their indices in bundle1
 	driverIndices := make(map[int]int)
 
@@ -192,7 +190,7 @@ func SetRecordChangeIndicatorDriver(bundle1, bundle2 *workflowmodels.Bundle) err
 	return nil
 }
 
-func anyFieldChangeIndicatorsChanged(indicators commonmodels.ChangeIndicators) bool {
+func anyFieldChangeIndicatorsChanged(indicators models.ChangeIndicators) bool {
 	for _, indicator := range indicators {
 		if indicator == "C" {
 			return true
@@ -201,7 +199,7 @@ func anyFieldChangeIndicatorsChanged(indicators commonmodels.ChangeIndicators) b
 	return false
 }
 
-func allFieldChangeIndicatorsAdded(indicators commonmodels.ChangeIndicators) bool {
+func allFieldChangeIndicatorsAdded(indicators models.ChangeIndicators) bool {
 	for _, indicator := range indicators {
 		if indicator != "A" {
 			return false
@@ -210,7 +208,7 @@ func allFieldChangeIndicatorsAdded(indicators commonmodels.ChangeIndicators) boo
 	return true
 }
 
-func SetRecordChangeIndicatorVehicle(bundle1, bundle2 *workflowmodels.Bundle) error {
+func SetRecordChangeIndicatorVehicle(bundle1, bundle2 *models.Bundle) error {
 	// Create a map to store vehicles' IDs and their indices in bundle1
 	vehicleIndices := make(map[int]int)
 
@@ -254,7 +252,7 @@ func SetRecordChangeIndicatorVehicle(bundle1, bundle2 *workflowmodels.Bundle) er
 	return nil
 }
 
-func SetRecordChangeIndicatorCoverage(vehicle1, vehicle2 *workflowmodels.Vehicle) {
+func SetRecordChangeIndicatorCoverage(vehicle1, vehicle2 *models.Vehicle) {
 	// Create a map to store coverages' IDs and their indices in vehicle1
 	coverageIndices := make(map[string]int)
 
@@ -287,7 +285,7 @@ func SetRecordChangeIndicatorCoverage(vehicle1, vehicle2 *workflowmodels.Vehicle
 	}
 }
 
-func SetRecordChangeIndicatorPolicy(bundle *workflowmodels.Bundle) error {
+func SetRecordChangeIndicatorPolicy(bundle *models.Bundle) error {
 	// Get the policy from each bundle
 	if anyFieldChangeIndicatorsChanged(bundle.Policy.FieldChangeIndicators) {
 		bundle.Policy.RecordChangeIndicator = "C" // Set RecordChangeIndicator to 'C' if any field changes
@@ -301,7 +299,7 @@ func SetRecordChangeIndicatorPolicy(bundle *workflowmodels.Bundle) error {
 	return nil
 }
 
-func SetRecordChangeIndicatorPolicyHolder(bundle *workflowmodels.Bundle) error {
+func SetRecordChangeIndicatorPolicyHolder(bundle *models.Bundle) error {
 	// Get the policy from each bundle
 	if anyFieldChangeIndicatorsChanged(bundle.PolicyHolder.FieldChangeIndicators) {
 		bundle.PolicyHolder.RecordChangeIndicator = "C" // Set RecordChangeIndicator to 'C' if any field changes
@@ -315,7 +313,7 @@ func SetRecordChangeIndicatorPolicyHolder(bundle *workflowmodels.Bundle) error {
 	return nil
 }
 
-func SetRecordChangeIndicatorCurrentCarrier(bundle *workflowmodels.Bundle) error {
+func SetRecordChangeIndicatorCurrentCarrier(bundle *models.Bundle) error {
 	// Get the policy from each bundle
 	if anyFieldChangeIndicatorsChanged(bundle.CurrentCarrier.FieldChangeIndicators) {
 		bundle.CurrentCarrier.RecordChangeIndicator = "C" // Set RecordChangeIndicator to 'C' if any field changes

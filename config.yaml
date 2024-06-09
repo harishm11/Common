@@ -1,0 +1,85 @@
+development:
+  CORS:
+    AllowHeaders: "Origin,Content-Type,Accept,Authorization"
+    AllowOrigins: "*"
+    AllowCredentials: false
+    AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS"
+  RateDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "RateDB"
+    Port: 5432
+    SSLMode: "disable"
+  PolicyProcessorDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "PolicyProcessorDB"
+    Port: 5432
+    SSLMode: "disable"
+  ThirdPartyDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "ThirdPartyDB"
+    Port: 5432
+    SSLMode: "disable"
+  Timezone: "UTC"
+
+production:
+  CORS:
+    AllowHeaders: "Origin,Content-Type,Accept,Authorization"
+    AllowOrigins: "*"
+    AllowCredentials: true
+    AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS"
+  RateDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "RateDB"
+    Port: 5432
+    SSLMode: "disable"
+  PolicyProcessorDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "PolicyProcessorDB"
+    Port: 5432
+    SSLMode: "disable"
+  ThirdPartyDB:
+    Host: "localhost"
+    User: "postgres"
+    Password: "readonly"
+    DBName: "ThirdPartyDB"
+    Port: 5432
+    SSLMode: "disable"
+  Timezone: "UTC"
+
+Ports:
+  development:
+    PolicyService: 8001
+    TransactionService: 8003
+    AccountService: 8000
+    RatingService: 8002
+    WorkflowService: 8004
+  production:
+    PolicyService: 80
+    TransactionService: 443
+    AccountService: 80
+    RatingService: 443
+    WorkflowService: 443
+
+Urls:
+  development:
+    PolicyService: "http://localhost:8001"
+    TransactionService: "http://localhost:8003"
+    AccountService: "http://localhost:8000"
+    RatingService: "http://localhost:8002"
+    WorkflowService: "http://localhost:8004"
+  production:
+    PolicyService: "https://example.com"
+    TransactionService: "https://example.com"
+    AccountService: "https://example.com"
+    RatingService: "https://example.com"
+    WorkflowService: "https://example.com"

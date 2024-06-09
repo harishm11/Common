@@ -3,15 +3,12 @@ package utils
 import (
 	"time"
 
-	"github.com/harishm11/PolicyProcessor_V1.0/common/logger"
-	commonmodels "github.com/harishm11/PolicyProcessor_V1.0/common/models"
-	policymodels "github.com/harishm11/PolicyProcessor_V1.0/services/policy_service/models"
-	workflowmodels "github.com/harishm11/PolicyProcessor_V1.0/services/workflow_service/models"
-
 	"github.com/gofiber/fiber/v2"
+	"github.com/harishm11/API-Gateway/logger"
+	"github.com/harishm11/API-Gateway/models"
 )
 
-func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workflowmodels.Bundle) error {
+func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *models.Bundle) error {
 	defer func() {
 		if r := recover(); r != nil {
 			// Recover from panic and send a Fiber error in the context
@@ -30,7 +27,7 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 	if FirstQuote {
 		policyNumber = int(gen.GenerateID())
 	}
-	bundle.Policy = policymodels.Policy{
+	bundle.Policy = models.Policy{
 		PolicyNumber:   policyNumber,
 		AccountNumber:  int(policyData["AccountNumber"].(float64)),
 		LineofBusiness: lob.(string),
@@ -60,7 +57,7 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 	cvgst_date := ParseDate(DateValue)
 	DateValue = currentCarrierData["CoverageEndDate"].(string)
 	cvgend_date := ParseDate(DateValue)
-	bundle.CurrentCarrier = workflowmodels.CurrentCarrierInfo{
+	bundle.CurrentCarrier = models.CurrentCarrierInfo{
 		PolicyNumber:      policyNumber,
 		EffectiveDate:     eff_date,
 		CurrentCarrier:    currentCarrierData["CurrentCarrier"].(string),
@@ -70,19 +67,19 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 
 	//PolicyHolder data
 	policyHolderData := data["PolicyHolderForm"].(map[string]interface{})
-	bundle.PolicyHolder = policymodels.PolicyHolder{
+	bundle.PolicyHolder = models.PolicyHolder{
 		PolicyNumber:  policyNumber,
 		EffectiveDate: eff_date,
-		Person: commonmodels.Person{
+		Person: models.Person{
 			FirstName:  policyHolderData["FirstName"].(string),
 			LastName:   policyHolderData["MiddleName"].(string),
 			MiddleName: policyHolderData["LastName"].(string),
 		},
 	}
-	bundle.PolicyAddress = policymodels.PolicyAddress{
+	bundle.PolicyAddress = models.PolicyAddress{
 		PolicyNumber:  policyNumber,
 		EffectiveDate: eff_date,
-		Address: commonmodels.Address{
+		Address: models.Address{
 			AddressLine1: handleNullString(policyHolderData["AddressLine1"]),
 			AddressLine2: handleNullString(policyHolderData["AddressLine2"]),
 			City:         handleNullString(policyHolderData["City"]),
@@ -94,13 +91,13 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 
 	// Drivers data
 	driversData := data["DriverForm"].([]interface{})
-	var drivers []workflowmodels.Driver
+	var drivers []models.Driver
 	for _, driver := range driversData {
 		driverData := driver.(map[string]interface{})
 
 		driverNumber := int(driverData["DriverID"].(float64))
 
-		d := workflowmodels.Driver{
+		d := models.Driver{
 			EffectiveDate:     eff_date,
 			PolicyNumber:      policyNumber,
 			DriverID:          driverNumber,
@@ -124,7 +121,7 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 
 	//  Vehicles data
 	vehiclesData := data["VehicleForm"].([]interface{})
-	var vehicles []workflowmodels.Vehicle
+	var vehicles []models.Vehicle
 	for _, vehicle := range vehiclesData {
 		vehicleData := vehicle.(map[string]interface{})
 
@@ -132,10 +129,10 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 
 		coveragesData := vehicleData["Coverages"].([]interface{})
 
-		var coverages []workflowmodels.Coverage
+		var coverages []models.Coverage
 		for _, coverage := range coveragesData {
 			coverageData := coverage.(map[string]interface{})
-			c := workflowmodels.Coverage{
+			c := models.Coverage{
 				EffectiveDate:  eff_date,
 				CoverageCode:   coverageData["CoverageCode"].(string),
 				CoverageOption: coverageData["CoverageOption"].(string),
@@ -143,7 +140,7 @@ func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *workfl
 			coverages = append(coverages, c)
 		}
 
-		v := workflowmodels.Vehicle{
+		v := models.Vehicle{
 			EffectiveDate:   eff_date,
 			PolicyNumber:    policyNumber,
 			VehicleID:       vehicleNumber,
