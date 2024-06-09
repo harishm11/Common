@@ -8,8 +8,8 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o /api-gateway ./cmd/main.go
+RUN go build -o /API-Gateway ./cmd/main.go
 
 EXPOSE 3000
 
-CMD [ "/api-gateway" ]
+CMD [ "/API-Gateway" ]

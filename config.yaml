@@ -58,11 +58,11 @@ production:
 
 Ports:
   development:
-    PolicyService: 8001
-    TransactionService: 8003
     AccountService: 8000
+    PolicyService: 8001
     RatingService: 8002
-    WorkflowService: 8004
+    TransactionService: 8003
+    WorkFlowService: 8004
   production:
     PolicyService: 80
     TransactionService: 443
