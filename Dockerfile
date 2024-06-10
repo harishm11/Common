@@ -8,6 +8,8 @@ RUN go mod download
 
 COPY . ./
 
+COPY config.yaml /app/config.yaml
+
 RUN go build -o /API-Gateway ./cmd/main.go
 
 EXPOSE 3000
