@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/harishm11/API-Gateway/models"
+	"github.com/harishm11/Common/models"
 )
 
 // RecordChangeIndicators represents the change indicators for records

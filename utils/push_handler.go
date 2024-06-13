@@ -3,9 +3,9 @@ package utils
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/harishm11/API-Gateway/config"
-	"github.com/harishm11/API-Gateway/logger"
-	"github.com/harishm11/API-Gateway/models"
+	"github.com/harishm11/Common/config"
+	"github.com/harishm11/Common/logger"
+	"github.com/harishm11/Common/models"
 	"gorm.io/gorm"
 )
 

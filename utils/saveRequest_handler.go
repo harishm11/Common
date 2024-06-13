@@ -5,9 +5,9 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/harishm11/API-Gateway/config"
-	"github.com/harishm11/API-Gateway/logger"
-	"github.com/harishm11/API-Gateway/models"
+	"github.com/harishm11/Common/config"
+	"github.com/harishm11/Common/logger"
+	"github.com/harishm11/Common/models"
 )
 
 func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *models.Bundle, mode string, workflowName string) error {
