@@ -15,7 +15,7 @@ type Config struct {
 
 var AppConfig Config
 
-func InitConfig() {
+func InitConfig() error {
 	viper.SetConfigFile("/app/config.yaml")
 	viper.SetConfigType("yaml")
 	err := viper.ReadInConfig()
@@ -34,6 +34,7 @@ func InitConfig() {
 	AppConfig.PolicyServiceURL = viper.GetString("POLICY_SERVICE_URL")
 	AppConfig.AccountServiceURL = viper.GetString("ACCOUNT_SERVICE_URL")
 
+	return nil
 }
 func GetConfig(key string) string {
 	return viper.GetString(key)
