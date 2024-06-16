@@ -168,3 +168,4 @@ backend/go.sum
 backend/uploads/*
 backend/__debug_bin3490889543
 .DS_Store
+go.mod.bak
