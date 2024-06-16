@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -17,22 +16,37 @@ var DBConn *gorm.DB
 
 // InitDatabase initializes the database connection for a given database name
 func InitDatabase(dbname string) (*gorm.DB, error) {
+	var dbHost, dbUser, dbPassword, dbPort, dbSslmode string
 
-	env := viper.GetString("env")
-	dbConfig := viper.Sub(env + "." + dbname)
+	switch dbname {
+	case "PolicyProcessorDB":
+		dbHost = os.Getenv("POLICY_PROCESSOR_DB_HOST")
+		dbUser = os.Getenv("POLICY_PROCESSOR_DB_USER")
+		dbPassword = os.Getenv("POLICY_PROCESSOR_DB_PASSWORD")
+		dbPort = os.Getenv("POLICY_PROCESSOR_DB_PORT")
+		dbSslmode = os.Getenv("POLICY_PROCESSOR_DB_SSLMODE")
+	case "RateDB":
+		dbHost = os.Getenv("RATE_DB_HOST")
+		dbUser = os.Getenv("RATE_DB_USER")
+		dbPassword = os.Getenv("RATE_DB_PASSWORD")
+		dbPort = os.Getenv("RATE_DB_PORT")
+		dbSslmode = os.Getenv("RATE_DB_SSLMODE")
+	default:
+		return nil, fmt.Errorf("no database configuration found for database: %s", dbname)
+	}
 
-	if dbConfig == nil {
-		return nil, fmt.Errorf("no database configuration found for database: %s in environment: %s", dbname, env)
+	if dbHost == "" || dbUser == "" || dbPassword == "" || dbPort == "" || dbSslmode == "" {
+		return nil, fmt.Errorf("database configuration environment variables are not set")
 	}
 
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%d sslmode=%s",
-		dbConfig.GetString("host"),
-		dbConfig.GetString("user"),
-		dbConfig.GetString("password"),
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		dbHost,
+		dbUser,
+		dbPassword,
 		dbname, // use the dbname parameter directly here
-		dbConfig.GetInt("port"),
-		dbConfig.GetString("sslmode"),
+		dbPort,
+		dbSslmode,
 	)
 
 	// Create a folder for logs if it doesn't exist
@@ -43,7 +57,6 @@ func InitDatabase(dbname string) (*gorm.DB, error) {
 	}
 
 	// Generate log file name with current date and time
-	//currentTime := time.Now().Format("2006-01-02_15-04-05")
 	logFileName := fmt.Sprintf("database_%s.log", dbname)
 	logFilePath := filepath.Join(logsDir, logFileName)
 
@@ -73,3 +86,5 @@ func InitDatabase(dbname string) (*gorm.DB, error) {
 
 	return db, nil
 }
+
+// RunMigrations runs the database migrations using gormigrate

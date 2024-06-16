@@ -2,14 +2,13 @@ package config
 
 import (
 	"log"
+	"os"
 	"time"
-
-	"github.com/spf13/viper"
 )
 
 func SetupTimezone() {
-	env := viper.GetString("env")
-	timezone := viper.GetString(env + ".timezone")
+
+	timezone := os.Getenv("TIME_ZONE")
 	if timezone == "" {
 		timezone = "UTC"
 	}
