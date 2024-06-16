@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// RunMigrations runs the database migrations
 func RunMigrations(db *gorm.DB) {
 	migrator := gormigrate.New(db, gormigrate.DefaultOptions, GetMigrations())
 
