@@ -3,8 +3,8 @@ package utils
 import (
 	"time"
 
+	models "github.com/harishm11/Common/PolicyModels"
 	"github.com/harishm11/Common/logger"
-	"github.com/harishm11/Common/models"
 )
 
 func MarshallBundle(bundle *models.Bundle, effectiveDate time.Time) (map[string]interface{}, error) {

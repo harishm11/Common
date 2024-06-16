@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/harishm11/Common/models"
+	models "github.com/harishm11/Common/PolicyModels"
 )
 
 // RecordChangeIndicators represents the change indicators for records

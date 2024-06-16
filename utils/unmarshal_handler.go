@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	models "github.com/harishm11/Common/PolicyModels"
 	"github.com/harishm11/Common/logger"
-	"github.com/harishm11/Common/models"
 )
 
 func UnmarshallRequest(c *fiber.Ctx, data map[string]interface{}, bundle *models.Bundle) error {
