@@ -3,9 +3,9 @@ package utils
 import (
 	"time"
 
-	models "github.com/harishm11/Common/PolicyModels"
 	"github.com/harishm11/Common/config"
 	"github.com/harishm11/Common/logger"
+	models "github.com/harishm11/Common/models/PolicyModels"
 )
 
 func ShortPull(policyNum int, effectiveDate time.Time, tables []string) (*models.Bundle, error) {

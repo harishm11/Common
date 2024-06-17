@@ -2,8 +2,8 @@ package migrations
 
 import (
 	"github.com/go-gormigrate/gormigrate/v2"
-	models "github.com/harishm11/Common/PolicyModels"
-	ratingmodels "github.com/harishm11/Common/RatingModels"
+	models "github.com/harishm11/Common/models/PolicyModels"
+	ratingmodels "github.com/harishm11/Common/models/RatingModels"
 	"gorm.io/gorm"
 )
 

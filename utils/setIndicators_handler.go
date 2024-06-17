@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	models "github.com/harishm11/Common/PolicyModels"
+	models "github.com/harishm11/Common/models/PolicyModels"
 )
 
 const (
