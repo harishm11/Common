@@ -79,12 +79,12 @@ func InitDatabase(dbname string) (*gorm.DB, error) {
 		},
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: loggerDb})
+	DBConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: loggerDb})
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database %s: %w", dbname, err)
 	}
 
-	return db, nil
+	return DBConn, nil
 }
 
 // GetDBConn returns the current database connection
