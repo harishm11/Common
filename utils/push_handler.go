@@ -10,7 +10,7 @@ import (
 )
 
 func Push(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
-	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
+	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
 	}
@@ -133,7 +133,7 @@ func Push(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
 }
 
 func SubmissionPush(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
-	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
+	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
 	}

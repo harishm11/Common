@@ -11,7 +11,7 @@ import (
 )
 
 func SaveRequest(c *fiber.Ctx, requestData map[string]interface{}, bundle *models.Bundle, mode string, workflowName string) error {
-	policyProcessorDB, err := config.InitDatabase("PolicyProcessorDB")
+	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
 	}

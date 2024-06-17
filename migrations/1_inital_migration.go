@@ -49,7 +49,7 @@ func getRateDBMigrations() []*gormigrate.Migration {
 	// Example migrations for RateDB
 	return []*gormigrate.Migration{
 		{
-			ID: "1",
+			ID: "2",
 			Migrate: func(tx *gorm.DB) error {
 				return tx.AutoMigrate(&ratingmodels.Ratebooks{},
 					&ratingmodels.RateFactors{},
@@ -62,6 +62,5 @@ func getRateDBMigrations() []*gormigrate.Migration {
 				return nil
 			},
 		},
-		// Add more migrations as needed
 	}
 }

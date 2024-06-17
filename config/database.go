@@ -87,4 +87,12 @@ func InitDatabase(dbname string) (*gorm.DB, error) {
 	return db, nil
 }
 
-// RunMigrations runs the database migrations using gormigrate
+// GetDBConn returns the current database connection
+func GetDBConn() *gorm.DB {
+	return DBConn
+}
+
+// SetDBConn sets the database connection (useful for testing)
+func SetDBConn(db *gorm.DB) {
+	DBConn = db
+}
