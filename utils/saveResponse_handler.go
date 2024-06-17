@@ -6,7 +6,7 @@ import (
 
 func SaveResponse(c *fiber.Ctx, taskResponse interface{}, mode string) error {
 
-	// policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
+	// policyProcessorDB, err := config.GetDBConn()
 	// if err != nil {
 	// 	logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
 	// }

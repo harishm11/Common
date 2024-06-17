@@ -9,10 +9,7 @@ import (
 )
 
 func ShortPull(policyNum int, effectiveDate time.Time, tables []string) (*models.Bundle, error) {
-	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
-	if err != nil {
-		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
-	}
+	policyProcessorDB := config.GetDBConn()
 
 	// Load the Bundle model from the database
 	var bundle models.Bundle

@@ -4,16 +4,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/harishm11/Common/config"
-	"github.com/harishm11/Common/logger"
 	models "github.com/harishm11/Common/models/PolicyModels"
 	"gorm.io/gorm"
 )
 
 func Push(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
-	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
-	if err != nil {
-		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
-	}
+	policyProcessorDB := config.GetDBConn()
 
 	eff_date := bundle.Transaction.EffectiveDate
 	updates := map[string]interface{}{
@@ -133,10 +129,7 @@ func Push(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
 }
 
 func SubmissionPush(c *fiber.Ctx, bundle *models.Bundle) (string, error) {
-	policyProcessorDB, err := config.GetDBConn("PolicyProcessorDB")
-	if err != nil {
-		logger.GetLogger().Error(err, "Failed to initialize PolicyProcessorDB")
-	}
+	policyProcessorDB := config.GetDBConn()
 
 	// Save the Coverage models first and set their foreign key (e.g., VehicleID)
 	for i := range bundle.Vehicles {
