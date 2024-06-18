@@ -87,6 +87,9 @@ func SaveTransaction(c *fiber.Ctx, requestData map[string]interface{}, bundle *m
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error decoding transaction service response"})
 	}
 
+	// update the transction number in bundle
+	bundle.Transaction.TransactionNumber = createdTransaction.TransactionNumber
+
 	logger.GetLogger().Info("Transaction created successfully: ", createdTransaction)
 	return c.JSON(fiber.Map{"message": "Transaction created successfully", "transaction": createdTransaction})
 }
