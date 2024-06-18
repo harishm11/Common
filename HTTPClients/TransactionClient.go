@@ -75,7 +75,7 @@ func SaveTransaction(c *fiber.Ctx, requestData map[string]interface{}, bundle *m
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		logger.GetLogger().Error(errors.New("failed to get valid response from transaction service"), "Transaction service response error")
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Transaction service response error"})
 	}
