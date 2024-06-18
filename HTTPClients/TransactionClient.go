@@ -68,7 +68,7 @@ func SaveTransaction(c *fiber.Ctx, requestData map[string]interface{}, bundle *m
 	}
 
 	// Make the HTTP POST request to the transaction service
-	resp, err := http.Post(transactionServiceURL+"/create-transaction", "application/json", bytes.NewBuffer(transactionRequestBody))
+	resp, err := http.Post(transactionServiceURL, "application/json", bytes.NewBuffer(transactionRequestBody))
 	if err != nil {
 		logger.GetLogger().Error(err, "Failed to call transaction service")
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to call transaction service"})
