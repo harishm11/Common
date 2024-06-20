@@ -10,8 +10,8 @@ type Transaction struct {
 	gorm.Model            `swaggerignore:"true"`
 	AccountNumber         int
 	PolicyNumber          int `gorm:"foreignKey:PolicyNumber"`
-	TransactionNumber     int
-	TransactionType       string `gorm:"primaryKey;uniqueIndex;"`
+	TransactionNumber     int `gorm:"primaryKey;uniqueIndex;"`
+	TransactionType       string
 	Lob                   string
 	EffectiveDate         time.Time
 	TransactionDate       time.Time
