@@ -7,7 +7,7 @@ import (
 )
 
 type Vehicle struct {
-	gorm.Model `swaggerignore:"true"`
+	gorm.Model            `swaggerignore:"true"`
 	VehicleID             int `json:"VehicleID" gorm:"primaryKey;uniqueIndex;"`
 	VIN                   string
 	PolicyNumber          int        `json:"PolicyNumber" gorm:"foreignKey:PolicyNumber"`
@@ -19,7 +19,7 @@ type Vehicle struct {
 	PrimaryOperator       string     `json:"PrimaryOperator" display:"Primary Operator"`
 	LoanORLease           string     `json:"LoanORLease"`
 	Rideshare             string     `json:"Rideshare"`
-	Coverages             []Coverage `json:"Coverages" gorm:"foreignKey:VehicleID" `
+	Coverages             []Coverage `json:"Coverages" gorm:"foreignKey:VehicleID;references:VehicleID;constraint:OnDelete:CASCADE;"`
 	EffectiveDate         time.Time
 	FieldChangeIndicators ChangeIndicators `gorm:"-"`
 	RecordChangeIndicator string           `gorm:"-"`
