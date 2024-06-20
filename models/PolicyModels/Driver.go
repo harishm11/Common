@@ -7,9 +7,8 @@ import (
 )
 
 type Driver struct {
-	gorm.Model `swaggerignore:"true"`
-	DriverID   int `json:"DriverID" gorm:"primaryKey;uniqueIndex;"`
-	// QuoteID                    uint   `gorm:"foreignKey:ID"`
+	gorm.Model                 `swaggerignore:"true"`
+	DriverID                   int    `json:"DriverID" gorm:"primaryKey;uniqueIndex;"`
 	PolicyNumber               int    `json:"PolicyNumber" gorm:"foreignKey:PolicyNumber"`
 	FirstName                  string `json:"FirstName"`
 	LastName                   string `json:"LastName"`
