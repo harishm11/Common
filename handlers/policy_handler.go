@@ -5,14 +5,18 @@ import (
 	"github.com/harishm11/Common/builder"
 	"github.com/harishm11/Common/clients"
 	"github.com/harishm11/Common/logger"
+	models "github.com/harishm11/Common/models/PolicyModels"
 )
 
-func PolicyRequestHandler(c *fiber.Ctx) error {
-	var policyData builder.PolicyData
+func PolicyRequestHandler(bundle *models.Bundle, c *fiber.Ctx) error {
 
-	if err := c.BodyParser(&policyData); err != nil {
-		logger.GetLogger().Error(err, "Error parsing policy data")
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Invalid policy data"})
+	policyData := builder.PolicyData{
+		Policy:         bundle.Policy,
+		CurrentCarrier: bundle.CurrentCarrier,
+		PolicyHolder:   bundle.PolicyHolder,
+		PolicyAddress:  bundle.PolicyAddress,
+		Drivers:        bundle.Drivers,
+		Vehicles:       bundle.Vehicles,
 	}
 
 	response, err := clients.CallPolicyService(policyData)
