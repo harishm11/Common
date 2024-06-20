@@ -8,11 +8,10 @@ import (
 
 type Transaction struct {
 	gorm.Model            `swaggerignore:"true"`
-	ID                    uint `gorm:"primaryKey"`
-	AccountNumber         int  `gorm:"foreignKey:AccountNumber"`
-	PolicyNumber          int
+	AccountNumber         int
+	PolicyNumber          int `gorm:"foreignKey:PolicyNumber"`
 	TransactionNumber     int
-	TransactionType       string
+	TransactionType       string `gorm:"primaryKey;uniqueIndex;"`
 	Lob                   string
 	EffectiveDate         time.Time
 	TransactionDate       time.Time
