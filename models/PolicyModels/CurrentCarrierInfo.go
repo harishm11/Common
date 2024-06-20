@@ -34,6 +34,15 @@ func PullCurrentCarrier(db *gorm.DB, policyNum int, effectiveDate time.Time) (*C
 	return &currentCarrier, nil
 }
 
+func PushCurrentCarrier(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var currentCarrier CurrentCarrierInfo
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&currentCarrier)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CurrentCarrierInfo) GetFieldValue(field string) interface{} {
 	switch field {
 	case "ID":

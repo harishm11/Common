@@ -48,6 +48,17 @@ func PullDrivers(db *gorm.DB, policyNum int, effectiveDate time.Time) (*[]Driver
 	return &drivers, nil
 }
 
+func PushDriver(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var driver Driver
+
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&driver)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (d *Driver) GetFieldValue(field string) interface{} {
 	switch field {
 	case "ID":

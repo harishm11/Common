@@ -38,6 +38,15 @@ func PullPolicy(db *gorm.DB, policyNum int, effectiveDate time.Time) (*Policy, e
 	return &policy, nil
 }
 
+func PushPolicy(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var policy Policy
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&policy)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *Policy) GetFieldValue(field string) interface{} {
 	switch field {
 	case "PolicyNumber":

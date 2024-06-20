@@ -31,3 +31,12 @@ func PullPolicyHolder(db *gorm.DB, policyNum int, effectiveDate time.Time) (*Pol
 
 	return &policyHolder, nil
 }
+
+func PushPolicyHolder(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var policyholder PolicyHolder
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&policyholder)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+}

@@ -31,3 +31,12 @@ func PullPolicyAddress(db *gorm.DB, policyNum int, effectiveDate time.Time) (*Po
 
 	return &policyAddress, nil
 }
+
+func PushPolicyAddress(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var policyAddress PolicyAddress
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&policyAddress)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+}

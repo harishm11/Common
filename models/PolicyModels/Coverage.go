@@ -38,6 +38,17 @@ func PullCoveragesForVehicle(db *gorm.DB, vehicleID uint, effectiveDate time.Tim
 	return &coverages, nil
 }
 
+func PushCoverage(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var coverage Coverage
+
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&coverage)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (c *Coverage) GetFieldValue(field string) interface{} {
 	switch field {
 	case "ID":

@@ -45,6 +45,17 @@ func PullVehicles(db *gorm.DB, policyNum int, effectiveDate time.Time) (*[]Vehic
 	return &vehicles, nil
 }
 
+func PushVehicle(db *gorm.DB, conditions interface{}, update interface{}) error {
+	var vehicle Vehicle
+
+	result := db.Where(conditions).Assign(update).FirstOrCreate(&vehicle)
+	if err := result.Error; err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (v *Vehicle) GetFieldValue(field string) interface{} {
 	switch field {
 	case "ID":
