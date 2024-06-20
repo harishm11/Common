@@ -9,7 +9,7 @@ import (
 type Coverage struct {
 	gorm.Model            `swaggerignore:"true"`
 	ID                    uint   `gorm:"primaryKey;uniqueIndex;"`
-	VehicleID             uint   `gorm:"not null"`
+	VehicleID             uint   `gorm:"foreignKey:VehicleID"`
 	CoverageCode          string `json:"CoverageCode" display:"Coverage Code"`
 	CvgSymbol             string
 	CoverageOption        string `json:"CoverageOption" display:"Coverage Option"`
