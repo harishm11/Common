@@ -7,9 +7,9 @@ import (
 )
 
 type Vehicle struct {
-	gorm.Model            `swaggerignore:"true"`
-	ID                    uint `gorm:"primaryKey;uniqueIndex;"`
-	VehicleID             int  `json:"VehicleID"`
+	gorm.Model `swaggerignore:"true"`
+	// ID                    uint `gorm:"primaryKey;uniqueIndex;"`
+	VehicleID             int `json:"VehicleID" gorm:"primaryKey;uniqueIndex;"`
 	VIN                   string
 	PolicyNumber          int        `json:"PolicyNumber" gorm:"foreignKey:PolicyNumber"`
 	Year                  int        `json:"Year"`
