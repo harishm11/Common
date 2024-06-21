@@ -1,4 +1,4 @@
-package handlers
+package servicehandlers
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -8,7 +8,18 @@ import (
 	models "github.com/harishm11/Common/models/PolicyModels"
 )
 
-func PolicyRequestHandler(bundle *models.Bundle, c *fiber.Ctx) error {
+func PolicyRequestHandler(bundle *models.Bundle, c *fiber.Ctx, function string) error {
+
+	var POLICY_SERVICE_URL string
+	switch function {
+	case "create":
+		POLICY_SERVICE_URL = "http://localhost:8001/createpolicy"
+	case "update":
+		POLICY_SERVICE_URL = "http://localhost:8001/updatepolicy"
+	case "get":
+		POLICY_SERVICE_URL = "http://localhost:8001/policy"
+
+	}
 
 	policyData := builder.PolicyData{
 		Policy:         bundle.Policy,
@@ -19,7 +30,7 @@ func PolicyRequestHandler(bundle *models.Bundle, c *fiber.Ctx) error {
 		Vehicles:       bundle.Vehicles,
 	}
 
-	response, err := clients.CallPolicyService(policyData)
+	response, err := clients.CallPolicyService(policyData, POLICY_SERVICE_URL)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": err.Error()})
 	}

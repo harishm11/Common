@@ -11,9 +11,7 @@ import (
 	"github.com/harishm11/Common/logger"
 )
 
-const POLICY_SERVICE_URL = "http://localhost:8001/createpolicy"
-
-func CallPolicyService(policyData builder.PolicyData) (interface{}, error) {
+func CallPolicyService(policyData builder.PolicyData, POLICY_SERVICE_URL string) (interface{}, error) {
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	requestBody, err := builder.PreparePolicyRequest(policyData)
