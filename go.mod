@@ -4,7 +4,7 @@ go 1.22.4
 
 require (
 	github.com/go-gormigrate/gormigrate/v2 v2.1.2
-	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/gofiber/fiber/v2 v2.52.5
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.10
 )

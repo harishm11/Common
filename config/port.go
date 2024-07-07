@@ -18,8 +18,6 @@ func GetPortForService(serviceName string) (int, error) {
 		portStr = os.Getenv("SERVICE_PORT_POLICY")
 	case "TransactionService":
 		portStr = os.Getenv("SERVICE_PORT_TRANSACTION")
-	case "TransactionService":
-		portStr = os.Getenv("SERVICE_PORT_WORKFLOW")
 	case "RatingService":
 		portStr = os.Getenv("SERVICE_PORT_RATING")
 	default:
