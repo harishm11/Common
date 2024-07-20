@@ -8,8 +8,8 @@ import (
 )
 
 // RunMigrations runs the database migrations
-func RunMigrations(db *gorm.DB, dbName string) {
-	migrator := gormigrate.New(db, gormigrate.DefaultOptions, GetMigrations(dbName))
+func RunMigrations(db *gorm.DB) {
+	migrator := gormigrate.New(db, gormigrate.DefaultOptions, GetMigrations())
 
 	if err := migrator.Migrate(); err != nil {
 		log.Fatalf("Could not migrate: %v", err)
